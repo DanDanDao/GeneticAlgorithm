@@ -1,3 +1,3 @@
 # GeneticAlgorithm
 
-# Genetic Algorithm in C
+Genetic Algorithm in C

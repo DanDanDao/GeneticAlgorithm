@@ -30,20 +30,21 @@ int * create_minfn_chrom(int numAlleles){
 
 Gene * mutate_pcbmill(Gene *g){
 	/* TO DO */
-	Gene * gene = (Gene *)malloc(sizeof(Gene));
+	int num1, num2, temp;
+	Gene * gene = malloc(sizeof(Gene));
 	gene = g;
-	int num1 = (rand() % gene->num_alleles) + 1;
-	int num2 = (rand() % gene->num_alleles) + 1;
+	num1 = (rand() % gene->num_alleles) + 1;
+	num2 = (rand() % gene->num_alleles) + 1;
 	while(num1==num2)
 	{
 		num2 = (rand() % gene->num_alleles) + 1;;
 	}
 	#ifdef DEBUG
-	int temp = gene->chromosome[2];
+	temp = gene->chromosome[2];
 	gene->chromosome[2] = gene->chromosome[4];
 	gene->chromosome[4] = temp;
 	#else
-	int temp = gene->chromosome[num1];
+	temp = gene->chromosome[num1];
 	gene->chromosome[num1] = gene->chromosome[num2];
 	gene->chromosome[num2] = temp;
 	#endif
@@ -52,12 +53,14 @@ Gene * mutate_pcbmill(Gene *g){
 
 Gene * mutate_minfn(Gene *g){
 	/* TO DO */
-	Gene * gene = (Gene *)malloc(sizeof(Gene));
+	int num;
+	Gene * gene = malloc(sizeof(Gene));
 	gene = g;
 	#ifdef DEBUG
+	num = 0;
 	gene->chromosome[2] = (rand() % MINFN_MAX) + 1;
 	#else
-	int num = (rand() % gene->num_alleles) + 1;
+	num = (rand() % gene->num_alleles) + 1;
 	gene->chromosome[num] = (rand() % MINFN_MAX) + 1;
 	#endif
 	return gene;
@@ -65,16 +68,17 @@ Gene * mutate_minfn(Gene *g){
 
 Gene * crossover_pcbmill(Gene *g1, Gene *g2){
 	/* TO DO */
-	Gene * gene = gene_create_rand_gene(g1->num_alleles, create_minfn_chrom);
+	int  i, j, k;
 	int value, index;
+	Gene * gene = gene_create_rand_gene(g1->num_alleles, create_minfn_chrom);
 	int num1 = (rand() % gene->num_alleles) + 1;
 	int num2 = (rand() % gene->num_alleles) + 1;
 	while(num1 >= num2)
 	{
 		num2 = (rand() % gene->num_alleles) + 1;;
 	}
-	int  i, j;
 	#ifdef DEBUG
+	k=0;
 	gene->chromosome[0] = g1->chromosome[2];
 	gene->chromosome[1] = g1->chromosome[3];
 	gene->chromosome[2] = g1->chromosome[4];
@@ -91,7 +95,6 @@ Gene * crossover_pcbmill(Gene *g1, Gene *g2){
 		}
 	}
 	#else
-	int k;
 	for (k = 0; k < num2-num1; k++) {
 		gene->chromosome[k] = g1->chromosome[num1+k];
 	}
@@ -138,9 +141,9 @@ double eval_minfn(InVTable *invt, Gene *gene){
 
 Gene * gene_create_rand_gene(int numAlleles, CreateFn create_chrom){
 	/* TO DO */
-	Gene * gene = (Gene *)malloc(sizeof(Gene));
+	Gene * gene = malloc(sizeof(Gene));
 	gene->num_alleles = numAlleles;
-	gene->chromosome = (int *)malloc(sizeof(int)*numAlleles);
+	gene->chromosome = malloc(sizeof(int)*numAlleles);
 	gene->chromosome = create_chrom(numAlleles);
 	gene->raw_score = 0.0;
 	gene->fitness = 0.0;

@@ -12,31 +12,34 @@
 #ifdef DEBUG
 void test_pcbmill(void){
 	/* TO DO */
+	Gene * gene = gene_create_rand_gene(TEST_ALLELE_LEN, create_pcbmill_chrom);
+	Gene * geneM = (Gene *)malloc(sizeof(Gene));
+	Gene * gene1 = gene_create_rand_gene(TEST_ALLELE_LEN, create_pcbmill_chrom);
+	Gene * gene2 = gene_create_rand_gene(TEST_ALLELE_LEN, create_pcbmill_chrom);
+	Gene * gene3 = crossover_pcbmill(gene1, gene2);
+
 
 	printf("PCBMILL gene:\n");
 	/* TO DO - create a random pcbmill gene by calling create_rand_gene
 	The length of the gene's chromosome should be TEST_ALLELE_LEN */
-	Gene * gene = gene_create_rand_gene(TEST_ALLELE_LEN, create_pcbmill_chrom);
 	/* TO DO - print the gene using gene_print */
 	gene_print(gene);
 
 	printf("Mutate: ");
 	/* TO DO - create a mutant copy of the gene using mutate_pcbmill */
 	/* TO DO - print the mutant gene using gene_print */
-	Gene * geneM = (Gene *)malloc(sizeof(Gene));
 	geneM = mutate_pcbmill(gene);
 	printf("\n");
 	gene_print(geneM);
 	/* TO DO - free the original gene and the mutant */
-	/* gene_free(gene);
-	 gene_free(geneM); */
+	/*gene_free(gene);
+	gene_free(geneM); */
 
 	printf("PCBMILL genes:\n");
 	/* TO DO - create 2 random pcbmill 'parent' genes using calls
 	to create_rand_gene
 	The length of the gene's chromosome should be TEST_ALLELE_LEN */
-	Gene * gene1 = gene_create_rand_gene(TEST_ALLELE_LEN, create_pcbmill_chrom);
-	Gene * gene2 = gene_create_rand_gene(TEST_ALLELE_LEN, create_pcbmill_chrom);
+
 	/* TO DO - print each gene */
 	gene_print(gene1);
 	gene_print(gene2);
@@ -44,7 +47,6 @@ void test_pcbmill(void){
 	printf("Crossover:\n");
 	/* TO DO produce a new gene by calling crossover_pcbmill
 	with the parent genes */
-	Gene * gene3 = crossover_pcbmill(gene1, gene2);
 	/* TO DO - print the new gene */
 	gene_print(gene3);
 
@@ -58,17 +60,20 @@ void test_pcbmill(void){
 
 void test_minfn(void){
 	/* TO DO */
+	Gene * gene = gene_create_rand_gene(TEST_ALLELE_LEN, create_minfn_chrom);
+	Gene * geneM = mutate_minfn(gene);
+	Gene * gene1 = gene_create_rand_gene(TEST_ALLELE_LEN, create_minfn_chrom);
+	Gene * gene2 = gene_create_rand_gene(TEST_ALLELE_LEN, create_minfn_chrom);
+	Gene * gene3 = crossover_minfn(gene1, gene2);
 
 	printf("MINFN gene:\n");
 	/* TO DO - create a random minfn gene by calling create_rand_gene
 	The length of the gene's chromosome should be TEST_ALLELE_LEN */
-	Gene * gene = gene_create_rand_gene(TEST_ALLELE_LEN, create_minfn_chrom);
 	/* TO DO - print the gene */
 	gene_print(gene);
 
 	printf("Mutate: ");
 	/* TO DO - create a mutant copy of the gene using mutate_minfn */
-	Gene * geneM = mutate_minfn(gene);
 	/* TO DO - print the mutant gene */
 	printf("\n");
 	gene_print(geneM);
@@ -81,8 +86,7 @@ void test_minfn(void){
 	/* TO DO - create 2 random minfn 'parent' genes using calls
 	to create_rand_gene
 	The length of the gene's chromosome should be TEST_ALLELE_LEN */
-	Gene * gene1 = gene_create_rand_gene(TEST_ALLELE_LEN, create_minfn_chrom);
-	Gene * gene2 = gene_create_rand_gene(TEST_ALLELE_LEN, create_minfn_chrom);
+
 	/* TO DO - print each gene */
 	gene_print(gene1);
 	gene_print(gene2);
@@ -90,7 +94,6 @@ void test_minfn(void){
 	printf("Crossover:\n");
 	/* TO DO produce a new gene by calling crossover_minfn
 	with the parent genes */
-	Gene * gene3 = crossover_minfn(gene1, gene2);
 	/* TO DO - print the new gene */
 	gene_print(gene3);
 
@@ -106,8 +109,8 @@ void test_minfn(void){
 int main(int argc, char *argv[]){
 
 	#ifdef DEBUG
-	test_pcbmill();
 	test_minfn();
+	test_pcbmill();
 	#else
 	printf("Not DEBUG \n");
 	#endif

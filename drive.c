@@ -68,8 +68,7 @@ void test_minfn(void){
 
 	printf("Mutate: ");
 	/* TO DO - create a mutant copy of the gene using mutate_minfn */
-	Gene * geneM = (Gene *)malloc(sizeof(Gene));
-	geneM = mutate_minfn(gene);
+	Gene * geneM = mutate_minfn(gene);
 	/* TO DO - print the mutant gene */
 	printf("\n");
 	gene_print(geneM);

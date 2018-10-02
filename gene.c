@@ -30,9 +30,14 @@ int * create_minfn_chrom(int numAlleles){
 
 Gene * mutate_pcbmill(Gene *g){
 	/* TO DO */
-	int num1, num2, temp;
+	int num1, num2, temp, i;
 	Gene * gene = malloc(sizeof(Gene));
 	* gene = * g;
+	gene->chromosome = malloc(sizeof(int)*g->num_alleles);
+	for(i = 0; i < gene->num_alleles; i++)
+	{
+		gene->chromosome[i] = g->chromosome[i];
+	}
 	#ifdef DEBUG
 	num1 = 2;
 	num2 = 4;
@@ -52,9 +57,14 @@ Gene * mutate_pcbmill(Gene *g){
 
 Gene * mutate_minfn(Gene *g){
 	/* TO DO */
-	int num;
+	int i, num;
 	Gene * gene = malloc(sizeof(Gene));
 	* gene = * g;
+	gene->chromosome = malloc(sizeof(int)*g->num_alleles);
+	for(i = 0; i < gene->num_alleles; i++)
+	{
+		gene->chromosome[i] = g->chromosome[i];
+	}
 	#ifdef DEBUG
 	num = 2;
 	#else
@@ -157,7 +167,7 @@ void gene_normalise_fitness(Gene *gene, double total_fitness){
 
 void gene_free(Gene *gene){
 	/* TO DO */
-	/* free(gene->chromosome); */
+	free(gene->chromosome);
 	free(gene);
 }
 

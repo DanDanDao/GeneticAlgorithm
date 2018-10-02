@@ -32,22 +32,21 @@ Gene * mutate_pcbmill(Gene *g){
 	/* TO DO */
 	int num1, num2, temp;
 	Gene * gene = malloc(sizeof(Gene));
-	gene = g;
+	* gene = * g;
+	#ifdef DEBUG
+	num1 = 2;
+	num2 = 4;
+	#else
 	num1 = (rand() % gene->num_alleles) + 1;
 	num2 = (rand() % gene->num_alleles) + 1;
 	while(num1==num2)
 	{
 		num2 = (rand() % gene->num_alleles) + 1;;
 	}
-	#ifdef DEBUG
-	temp = gene->chromosome[2];
-	gene->chromosome[2] = gene->chromosome[4];
-	gene->chromosome[4] = temp;
-	#else
+	#endif
 	temp = gene->chromosome[num1];
 	gene->chromosome[num1] = gene->chromosome[num2];
 	gene->chromosome[num2] = temp;
-	#endif
 	return gene;
 }
 
@@ -55,14 +54,13 @@ Gene * mutate_minfn(Gene *g){
 	/* TO DO */
 	int num;
 	Gene * gene = malloc(sizeof(Gene));
-	gene = g;
+	* gene = * g;
 	#ifdef DEBUG
-	num = 0;
-	gene->chromosome[2] = (rand() % MINFN_MAX) + 1;
+	num = 2;
 	#else
 	num = (rand() % gene->num_alleles) + 1;
-	gene->chromosome[num] = (rand() % MINFN_MAX) + 1;
 	#endif
+	gene->chromosome[num] = rand() % (MINFN_MAX + 1);
 	return gene;
 }
 
@@ -143,7 +141,6 @@ Gene * gene_create_rand_gene(int numAlleles, CreateFn create_chrom){
 	/* TO DO */
 	Gene * gene = malloc(sizeof(Gene));
 	gene->num_alleles = numAlleles;
-	gene->chromosome = malloc(sizeof(int)*numAlleles);
 	gene->chromosome = create_chrom(numAlleles);
 	gene->raw_score = 0.0;
 	gene->fitness = 0.0;
@@ -160,7 +157,7 @@ void gene_normalise_fitness(Gene *gene, double total_fitness){
 
 void gene_free(Gene *gene){
 	/* TO DO */
-	free(gene->chromosome);
+	/* free(gene->chromosome); */
 	free(gene);
 }
 

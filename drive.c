@@ -13,7 +13,7 @@
 void test_pcbmill(void){
 	/* TO DO */
 	Gene * gene = gene_create_rand_gene(TEST_ALLELE_LEN, create_pcbmill_chrom);
-	Gene * geneM = (Gene *)malloc(sizeof(Gene));
+	Gene * geneM = mutate_pcbmill(gene);
 	Gene * gene1 = gene_create_rand_gene(TEST_ALLELE_LEN, create_pcbmill_chrom);
 	Gene * gene2 = gene_create_rand_gene(TEST_ALLELE_LEN, create_pcbmill_chrom);
 	Gene * gene3 = crossover_pcbmill(gene1, gene2);
@@ -28,12 +28,11 @@ void test_pcbmill(void){
 	printf("Mutate: ");
 	/* TO DO - create a mutant copy of the gene using mutate_pcbmill */
 	/* TO DO - print the mutant gene using gene_print */
-	geneM = mutate_pcbmill(gene);
 	printf("\n");
 	gene_print(geneM);
 	/* TO DO - free the original gene and the mutant */
-	/*gene_free(gene);
-	gene_free(geneM); */
+	gene_free(gene);
+	gene_free(geneM);
 
 	printf("PCBMILL genes:\n");
 	/* TO DO - create 2 random pcbmill 'parent' genes using calls
@@ -79,8 +78,8 @@ void test_minfn(void){
 	gene_print(geneM);
 
 	/* TO DO - free the original gene and the mutant */
-	/* gene_free(gene);
-	 gene_free(geneM); */
+	gene_free(gene);
+	gene_free(geneM);
 
 	printf("MINFN genes:\n");
 	/* TO DO - create 2 random minfn 'parent' genes using calls

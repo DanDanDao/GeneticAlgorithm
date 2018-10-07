@@ -178,7 +178,7 @@ Gene * gene_create_rand_gene(int numAlleles, CreateFn create_chrom){
 void gene_calc_fitness(Gene *gene, EvalFn evaluate_fn, InVTable *invTab){
 	/* TO DO */
 	gene->raw_score = evaluate_fn(invTab, gene);
-	gene->fitness = gene_get_fitness(gene);
+	gene->fitness =  gene_get_fitness(gene);
 }
 
 void gene_normalise_fitness(Gene *gene, double total_fitness){

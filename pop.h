@@ -46,10 +46,36 @@ void pop_set_fns(Pop_list *p,CreateFn cf,MutateFn mf,CrossOverFn cof,EvalFn ef);
 void pop_print_fittest(Pop_list *p);
 
 /* TO DO - other functions as appropriate */
-void insertNode(Pop_list * list, int numAlleles);
+void printPopulationToFile(Pop_list * p, FILE * fp);
+
+void createInitialPopulation(Pop_list * p, int popSize, int alleleSize);
+
+Pop_node * createPopNode(int alleleSize, CreateFn cf);
+
+void insertNode(Pop_list * p, Pop_node * node);
 
 void calculateFitness(Pop_list * list, InVTable * invt);
 
 void printList(Pop_list * list);
+
+void evaluatePopulation(Pop_list * p, InVTable * invt);
+
+Pop_list * mutateAndCrossOverPopulation(Pop_list * p, InVTable * invt);
+
+void sortPopulation(Pop_list * p);
+
+void swapPopNode(Pop_node * previous, Pop_node * current);
+
+Pop_node * fittestPopNode(Pop_list * p);
+
+Pop_node * clonePopNode(Pop_node * node);
+
+Pop_node * randomPopNode(Pop_list * p);
+
+void freePop(Pop_list * p);
+
+void freePopNode(Pop_node * node);
+
+double fRand(double fMin, double fMax);
 
 #endif

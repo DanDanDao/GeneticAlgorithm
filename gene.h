@@ -84,4 +84,6 @@ void gene_print(Gene*);
 
 int find_index(int a[], int num_elements, int value);
 
+void * safeMalloc(size_t size);
+
 #endif

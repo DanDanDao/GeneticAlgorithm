@@ -144,7 +144,25 @@ double eval_pcbmill(InVTable *invt, Gene *gene){
 
 double eval_minfn(InVTable *invt, Gene *gene){
 	/* TO DO */
-	return 0.0;
+	double totalRawScore;
+	int i;
+	totalRawScore = 0;
+
+	for (i = 0; i < invt->tot; i++)
+	{
+		int * vector = invt->table[i];
+		double rawScore;
+		int j;
+
+		rawScore = 0;
+		for (j = 0; j < gene->num_alleles; j++)
+		{
+			rawScore += gene->chromosome[j] * vector[j];
+		}
+		rawScore -= vector[invt->width - 1];
+		totalRawScore += fabs(rawScore);
+	}
+	return totalRawScore;
 }
 
 Gene * gene_create_rand_gene(int numAlleles, CreateFn create_chrom){
@@ -159,10 +177,13 @@ Gene * gene_create_rand_gene(int numAlleles, CreateFn create_chrom){
 
 void gene_calc_fitness(Gene *gene, EvalFn evaluate_fn, InVTable *invTab){
 	/* TO DO */
+	gene->raw_score = evaluate_fn(invTab, gene);
+	gene->fitness = gene_get_fitness(gene);
 }
 
 void gene_normalise_fitness(Gene *gene, double total_fitness){
 	/* TO DO */
+	gene->fitness /= total_fitness;
 }
 
 void gene_free(Gene *gene){
@@ -174,7 +195,7 @@ void gene_free(Gene *gene){
 
 double gene_get_fitness(Gene *gene){
 	/* TO DO */
-	return 0.0;
+	return 1/(gene->raw_score+1);
 }
 
 void gene_print(Gene *gene) {
@@ -202,4 +223,17 @@ int find_index(int a[], int num_elements, int value)
 		}
 	}
 	return(-1);  /* if it was not found */
+}
+
+void * safeMalloc(size_t size)
+{
+	void * p = malloc(size);
+
+	if(p == NULL)
+	{
+		perror(NULL);
+		exit(EXIT_FAILURE);
+	}
+
+	return p;
 }

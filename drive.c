@@ -9,6 +9,71 @@
 #include "pop.h"
 #include "gene.h"
 
+int main(int argc, char *argv[])
+{
+	FILE * fp;
+	InVTable invt;
+	Pop_list * list;
+	int i, numAlleles, popSize, populationSize;
+
+	/* The only point at which srand should be called */
+	srand(SRAND_SEED);
+
+	if(argc != CMD_ARG_MAX)
+	{
+		printf("Incorrect number of arguments. \n\n");
+		return EXIT_FAILURE;
+	}
+
+	fp = fopen(argv[inputFile], "r");
+	if(fp == NULL)
+	{
+		printf("Unable to open file. \n\n");
+		return EXIT_FAILURE;
+	}
+
+	fclose(fp);
+
+	printInvector(&invt);
+	printf("\n");
+
+	#ifdef DEBUG
+	test_minfn();
+	test_pcbmill();
+	#else
+	printf("Not DEBUG \n");
+	#endif
+
+	pop_init(&list);
+
+	if(strcmp(argv[geneType], "minfn") == 0)
+	{
+		pop_set_fns(list, create_minfn_chrom, mutate_minfn, crossover_minfn, eval_minfn);
+	}
+	else if(strcmp(argv[geneType], "pcbmill") == 0)
+	{
+		pop_set_fns(list, create_pcbmill_chrom, mutate_pcbmill, crossover_pcbmill, eval_pcbmill);
+	}
+	else
+	{
+		printf("Unknown gene type. \n\n");
+		return EXIT_FAILURE;
+	}
+
+	exit(EXIT_FAILURE);
+
+	numAlleles = strtol(argv[numAlleles], NULL, 10);
+	populationSize = strtol(argv[popSize], NULL, 10);
+	for (i =0; i < populationSize; i++)
+	{
+		insertNode(list, numAlleles);
+	}
+
+	printList(list);
+
+	return EXIT_SUCCESS;
+}
+
 #ifdef DEBUG
 void test_pcbmill(void){
 	/* TO DO */
@@ -103,19 +168,3 @@ void test_minfn(void){
 	gene_free(gene3);
 }
 #endif
-
-
-int main(int argc, char *argv[]){
-
-	#ifdef DEBUG
-	test_minfn();
-	test_pcbmill();
-	#else
-	printf("Not DEBUG \n");
-	#endif
-
-	/* The only point at which srand should be called */
-	srand(SRAND_SEED);
-
-	return EXIT_SUCCESS;
-}

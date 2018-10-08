@@ -237,3 +237,23 @@ void * safeMalloc(size_t size)
 
 	return p;
 }
+
+void printGeneToFile(Gene * gene, FILE * fp)
+{
+	int i;
+	fp = fopen("results.dat", "w");
+	if (fp == NULL) {
+		printf("I couldn't open results.dat for writing.\n");
+		exit(0);
+	}
+
+	fprintf(fp, "chrom: ");
+	for(i = 0; i < gene->num_alleles; i++)
+	{
+		fprintf(fp, "%d", gene->chromosome[i]);
+		if(i < gene->num_alleles - 1)
+		fprintf(fp, ", ");
+	}
+	fprintf(fp, " fit: %.3f", gene->fitness);
+	fprintf(fp, " raw: %.3f \n", gene->raw_score);
+}

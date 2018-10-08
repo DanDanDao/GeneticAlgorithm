@@ -10,7 +10,7 @@
 #include "invector.h"
 
 /* Alleles in the chromosome for the MINFUNCT problem can have values
- * in the range 0..29 (inclusive) */
+* in the range 0..29 (inclusive) */
 #define MINFN_MAX 29
 
 typedef struct gene
@@ -21,7 +21,7 @@ typedef struct gene
 	/* Raw score is set by the chromosome evaluation function */
 	double raw_score;
 	/* The raw score is inverted and normalised to produce the fitness
- 	   The fitness is used to rank chromosomes for reproduction */
+	The fitness is used to rank chromosomes for reproduction */
 	double fitness;
 } Gene;
 
@@ -47,7 +47,7 @@ Gene * mutate_minfn(Gene*);
 typedef Gene * (*CrossOverFn)(Gene*, Gene*);
 
 /* Takes two parent genes and performs a crossover operation to
- * create a new child gene */
+* create a new child gene */
 Gene * crossover_pcbmill(Gene *g1, Gene *g2);
 
 Gene * crossover_minfn(Gene *g1, Gene *g2);
@@ -60,18 +60,18 @@ double eval_pcbmill(InVTable *invt, Gene *gene);
 double eval_minfn(InVTable *invt, Gene *gene);
 
 /* Attempts to create a new gene of length num_alleles, by calling a function
- * for creating the gene chromosome (create_chrom is a pointer to that
- * function). Returns NULL if the gene can't be created */
+* for creating the gene chromosome (create_chrom is a pointer to that
+* function). Returns NULL if the gene can't be created */
 Gene * gene_create_rand_gene(int num_alleles, CreateFn create_chrom);
 
 /* Takes a pointer to a function for evaluating a gene's chromosome, the gene
- * and a table of input vectors. The raw_score is set to the evaluation
- * function result. The fitness is the inverted raw_score: 1/(raw_score + 1.0)
- * */
+* and a table of input vectors. The raw_score is set to the evaluation
+* function result. The fitness is the inverted raw_score: 1/(raw_score + 1.0)
+* */
 void gene_calc_fitness(Gene *gene, EvalFn evaluate_fn, InVTable *invTab);
 
 /* The fitness of the gene is normalised against the population's
- * total_fitness */
+* total_fitness */
 void gene_normalise_fitness(Gene *gene, double total_fitness);
 
 void gene_free(Gene*);
@@ -79,11 +79,13 @@ void gene_free(Gene*);
 double gene_get_fitness(Gene *gene);
 
 /* The following function should be the only code for printing out
- * a gene, either to file or to standard output */
+* a gene, either to file or to standard output */
 void gene_print(Gene*);
 
 int find_index(int a[], int num_elements, int value);
 
 void * safeMalloc(size_t size);
+
+void printGeneToFile(Gene * gene, FILE * fp);
 
 #endif

@@ -59,8 +59,8 @@ void createInitialPopulation(Pop_list * p, int popSize, int alleleSize)
 
 	for(i = 0; i < popSize; i++)
 	{
-		Pop_node * node = createPopNode(alleleSize, p->create_rand_chrom);
-		insertNode(p, node);
+		/*Pop_node * node = createPopNode(alleleSize, p->create_rand_chrom);*/
+		insertNode(p, alleleSize);
 	}
 }
 
@@ -73,8 +73,12 @@ Pop_node * createPopNode(int alleleSize, CreateFn cf)
 	return node;
 }
 
-void insertNode(Pop_list * p, Pop_node * node)
+void insertNode(Pop_list * p, int numAlleles)
 {
+	Pop_node * node = safeMalloc(sizeof(*node));
+	node->next = NULL;
+	node->gene = gene_create_rand_gene(numAlleles, p->create_rand_chrom);
+
 	node->next = p->head;
 	p->head = node;
 	p->count++;

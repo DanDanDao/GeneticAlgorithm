@@ -14,7 +14,9 @@ int main(int argc, char *argv[])
 	FILE * fp;
 	InVTable invt;
 	Pop_list * list;
-	int i, numAlleles, popSize, populationSize;
+	int i;
+	int numAlleles = 0;
+	int popSize = 0;
 
 	/* The only point at which srand should be called */
 	srand(SRAND_SEED);
@@ -40,8 +42,7 @@ int main(int argc, char *argv[])
 	#ifdef DEBUG
 	test_minfn();
 	test_pcbmill();
-	#else
-	printf("Not DEBUG \n");
+	#endif
 
 	pop_init(&list);
 
@@ -59,11 +60,9 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
-	exit(EXIT_FAILURE);
-
 	numAlleles = strtol(argv[numAlleles], NULL, 10);
-	populationSize = strtol(argv[popSize], NULL, 10);
-	for (i =0; i < populationSize; i++)
+	popSize = strtol(argv[popSize], NULL, 10);
+	for (i =0; i < popSize; i++)
 	{
 		insertNode(list, numAlleles);
 	}
@@ -71,7 +70,6 @@ int main(int argc, char *argv[])
 	printList(list);
 
 	return EXIT_SUCCESS;
-	#endif
 
 }
 

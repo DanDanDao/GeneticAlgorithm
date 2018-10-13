@@ -15,8 +15,10 @@ int main(int argc, char *argv[])
 	InVTable invt;
 	Pop_list * list;
 	int i;
-	int numAlleles = 0;
-	int popSize = 0;
+	int numAllelesInt = 0;
+	int popSizeInt = 0;
+	int numGenInt = 0;
+	/*Pop_node * node;*/
 
 	/* The only point at which srand should be called */
 	srand(SRAND_SEED);
@@ -34,10 +36,13 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
-	fclose(fp);
+	invector_init(&invt);
+	readInvector(&invt, fp);
 
 	printInvector(&invt);
 	printf("\n");
+
+	fclose(fp);
 
 	#ifdef DEBUG
 	test_minfn();
@@ -48,6 +53,7 @@ int main(int argc, char *argv[])
 
 	if(strcmp(argv[geneType], "minfn") == 0)
 	{
+		printf("%d \n",numGen);
 		pop_set_fns(list, create_minfn_chrom, mutate_minfn, crossover_minfn, eval_minfn);
 	}
 	else if(strcmp(argv[geneType], "pcbmill") == 0)
@@ -60,14 +66,28 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
-	numAlleles = strtol(argv[numAlleles], NULL, 10);
-	popSize = strtol(argv[popSize], NULL, 10);
-	for (i =0; i < popSize; i++)
+	numAllelesInt = strtol(argv[alleleSize], NULL, 10);
+	popSizeInt = strtol(argv[popSize], NULL, 10);
+	numGenInt = strtol(argv[numGen], NULL, 10);
+
+
+	/*node = safeMalloc(sizeof(*node));
+	node->next = NULL;
+	node->gene = gene_create_rand_gene(numAllelesInt, list->create_rand_chrom);*/
+
+	createInitialPopulation(list, popSizeInt, numAllelesInt);
+	calculateFitness(list, &invt);
+
+	/*for (i =0; i < popSizeInt; i++)
 	{
-		insertNode(list, numAlleles);
-	}
+		insertNode(list, node);
+	}*/
 
 	printList(list);
+
+	for (i = 0; i < numGenInt; i++)
+	{
+	}
 
 	return EXIT_SUCCESS;
 

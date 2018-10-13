@@ -59,8 +59,8 @@ void createInitialPopulation(Pop_list * p, int popSize, int alleleSize)
 
 	for(i = 0; i < popSize; i++)
 	{
-		/*Pop_node * node = createPopNode(alleleSize, p->create_rand_chrom);*/
-		insertNode(p, alleleSize);
+		Pop_node * node = createPopNode(alleleSize, p->create_rand_chrom);
+		insertNode(p, node);
 	}
 }
 
@@ -73,11 +73,11 @@ Pop_node * createPopNode(int alleleSize, CreateFn cf)
 	return node;
 }
 
-void insertNode(Pop_list * p, int numAlleles)
+void insertNode(Pop_list * p, Pop_node * node)
 {
-	Pop_node * node = safeMalloc(sizeof(*node));
+	/*Pop_node * node = safeMalloc(sizeof(*node));
 	node->next = NULL;
-	node->gene = gene_create_rand_gene(numAlleles, p->create_rand_chrom);
+	node->gene = gene_create_rand_gene(numAlleles, p->create_rand_chrom);*/
 
 	node->next = p->head;
 	p->head = node;
@@ -165,7 +165,7 @@ Pop_list * mutateAndCrossOverPopulation(Pop_list * p, InVTable * invt)
 		newNode->gene = p->crossover_genes(randomPopNode(p)->gene, randomPopNode(p)->gene);
 		newNode->next = NULL;
 
-		/* Mutate gene at the MUTATE_RATE percentage which is 5% of the time*/
+		/* Mutate gene at the MUTATE_RATE percentage which is 5% of the time */
 		if(rand() % 100 < MUTATE_RATE)
 		{
 			Gene * gene = p->mutate_gene(newNode->gene);
@@ -174,7 +174,7 @@ Pop_list * mutateAndCrossOverPopulation(Pop_list * p, InVTable * invt)
 		}
 		insertNode(newPopulation, newNode);
 	}
-	return newPopulation;
+	 return newPopulation;
 }
 
 void sortPopulation(Pop_list * p)

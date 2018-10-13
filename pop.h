@@ -52,7 +52,7 @@ void createInitialPopulation(Pop_list * p, int popSize, int alleleSize);
 
 Pop_node * createPopNode(int alleleSize, CreateFn cf);
 
-void insertNode(Pop_list * p, int numAlleles);
+void insertNode(Pop_list * p, Pop_node * node);
 
 void calculateFitness(Pop_list * list, InVTable * invt);
 

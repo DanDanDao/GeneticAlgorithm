@@ -58,8 +58,6 @@ void calculateFitness(Pop_list * list, InVTable * invt);
 
 void printList(Pop_list * list);
 
-void evaluatePopulation(Pop_list * p, InVTable * invt);
-
 Pop_list * mutateAndCrossOverPopulation(Pop_list * p, InVTable * invt);
 
 void sortPopulation(Pop_list * p);

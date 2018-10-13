@@ -18,7 +18,8 @@ int main(int argc, char *argv[])
 	int numAllelesInt = 0;
 	int popSizeInt = 0;
 	int numGenInt = 0;
-	/*Pop_node * node;*/
+	Pop_list * listTemp;
+	Pop_list * listTemp2;
 
 	/* The only point at which srand should be called */
 	srand(SRAND_SEED);
@@ -53,7 +54,6 @@ int main(int argc, char *argv[])
 
 	if(strcmp(argv[geneType], "minfn") == 0)
 	{
-		printf("%d \n",numGen);
 		pop_set_fns(list, create_minfn_chrom, mutate_minfn, crossover_minfn, eval_minfn);
 	}
 	else if(strcmp(argv[geneType], "pcbmill") == 0)
@@ -66,28 +66,36 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
+	fp = fopen(argv[outputFile], "w");
+	if(fp == NULL)
+	{
+		printf("Unable to open file. \n\n");
+		return EXIT_FAILURE;
+	}
+
 	numAllelesInt = strtol(argv[alleleSize], NULL, 10);
 	popSizeInt = strtol(argv[popSize], NULL, 10);
 	numGenInt = strtol(argv[numGen], NULL, 10);
 
-
-	/*node = safeMalloc(sizeof(*node));
-	node->next = NULL;
-	node->gene = gene_create_rand_gene(numAllelesInt, list->create_rand_chrom);*/
-
 	createInitialPopulation(list, popSizeInt, numAllelesInt);
 	calculateFitness(list, &invt);
 
-	/*for (i =0; i < popSizeInt; i++)
-	{
-		insertNode(list, node);
-	}*/
-
 	printList(list);
 
-	for (i = 0; i < numGenInt; i++)
+	gene_print((fittestPopNode(list))->gene);
+	printf("\n");
+
+	listTemp = list;
+
+	for (i = 0; i < numGenInt - 1; i++)
 	{
+		listTemp = mutateAndCrossOverPopulation(listTemp, &invt);
+		gene_print((fittestPopNode(listTemp))->gene);
+		printf("\n");
+		printPopulationToFile(listTemp, fp);
 	}
+
+	fclose(fp);
 
 	return EXIT_SUCCESS;
 

@@ -241,7 +241,7 @@ void * safeMalloc(size_t size)
 void printGeneToFile(Gene * gene, FILE * fp)
 {
 	int i;
-	fp = fopen("results.dat", "w");
+	fp = fopen("out.dat", "w");
 	if (fp == NULL) {
 		printf("I couldn't open results.dat for writing.\n");
 		exit(0);

@@ -31,6 +31,10 @@ void pop_set_fns(Pop_list *p,CreateFn cf,MutateFn mf,CrossOverFn cof,EvalFn ef){
 
 void pop_print_fittest(Pop_list *p){
 	/* TO DO */
+	Pop_node * node;
+
+	node = fittestPopNode(p);
+	printf("Gen:  %d", *node->gene->chromosome);
 	printPopulationToFile(p, stdout);
 }
 
@@ -75,10 +79,6 @@ Pop_node * createPopNode(int alleleSize, CreateFn cf)
 
 void insertNode(Pop_list * p, Pop_node * node)
 {
-	/*Pop_node * node = safeMalloc(sizeof(*node));
-	node->next = NULL;
-	node->gene = gene_create_rand_gene(numAlleles, p->create_rand_chrom);*/
-
 	node->next = p->head;
 	p->head = node;
 	p->count++;
@@ -116,34 +116,6 @@ void printList(Pop_list * list)
 		node = node->next;
 	}
 	printf("Total Fitness: %f \n\n", totalFitness);
-}
-
-void evaluatePopulation(Pop_list * p, InVTable * invt)
-{
-	Pop_node * node;
-	double totalFitness;
-
-	node = p->head;
-	while(node != NULL)
-	{
-		gene_calc_fitness(node->gene, p->evaluate_fn, invt);
-		node = node->next;
-	}
-
-	/* Now normalise fitness. */
-	totalFitness = 0;
-	node = p->head;
-	while(node != NULL)
-	{
-		totalFitness += node->gene->fitness;
-		node = node->next;
-	}
-	node = p->head;
-	while(node != NULL)
-	{
-		gene_normalise_fitness(node->gene, totalFitness);
-		node = node->next;
-	}
 }
 
 Pop_list * mutateAndCrossOverPopulation(Pop_list * p, InVTable * invt)

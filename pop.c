@@ -1,6 +1,6 @@
 /******************************************************************************
-** Student name: 	...
-** Student number: 	...
+** Student name: 	Quang Dao
+** Student number: 	S3687103
 ** Course: 			Advanced Programming Techniques - S2 2018
 ******************************************************************************/
 
@@ -31,11 +31,19 @@ void pop_set_fns(Pop_list *p,CreateFn cf,MutateFn mf,CrossOverFn cof,EvalFn ef){
 
 void pop_print_fittest(Pop_list *p){
 	/* TO DO */
+	int i;
 	Pop_node * node;
-
 	node = fittestPopNode(p);
-	printf("Gen:  %d", *node->gene->chromosome);
-	printPopulationToFile(p, stdout);
+	printf("chrom: ");
+	for(i = 0; i < node->gene->num_alleles; i++)
+	{
+		printf("%d", node->gene->chromosome[i]);
+		if(i < node->gene->num_alleles - 1)
+		printf(", ");
+	}
+	printf(" fit: %.3f", node->gene->fitness);
+	printf(" raw: %.3f \n", node->gene->raw_score);
+	/*printPopulationToFile(p, stdout);*/
 }
 
 /* TO DO - other functions as appropriate */

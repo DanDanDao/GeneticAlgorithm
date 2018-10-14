@@ -1,6 +1,6 @@
 /******************************************************************************
-** Student name: 	...
-** Student number: 	...
+** Student name: 	Quang Dao
+** Student number: 	S3687103
 ** Course: 			Advanced Programming Techniques - S2 2018
 ******************************************************************************/
 
@@ -18,8 +18,6 @@ int main(int argc, char *argv[])
 	int numAllelesInt = 0;
 	int popSizeInt = 0;
 	int numGenInt = 0;
-	Pop_list * listTemp;
-	Pop_list * listTemp2;
 
 	/* The only point at which srand should be called */
 	srand(SRAND_SEED);
@@ -55,10 +53,12 @@ int main(int argc, char *argv[])
 	if(strcmp(argv[geneType], "minfn") == 0)
 	{
 		pop_set_fns(list, create_minfn_chrom, mutate_minfn, crossover_minfn, eval_minfn);
+		numAllelesInt = strtol(argv[alleleSize], NULL, 10);
 	}
 	else if(strcmp(argv[geneType], "pcbmill") == 0)
 	{
 		pop_set_fns(list, create_pcbmill_chrom, mutate_pcbmill, crossover_pcbmill, eval_pcbmill);
+		numAllelesInt = strtol(argv[alleleSize], NULL, 10);
 	}
 	else
 	{
@@ -73,26 +73,27 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
-	numAllelesInt = strtol(argv[alleleSize], NULL, 10);
 	popSizeInt = strtol(argv[popSize], NULL, 10);
 	numGenInt = strtol(argv[numGen], NULL, 10);
 
 	createInitialPopulation(list, popSizeInt, numAllelesInt);
 	calculateFitness(list, &invt);
 
+	printf("Gen:   0 ");
+	pop_print_fittest(list);
 	printList(list);
-
-	gene_print((fittestPopNode(list))->gene);
-	printf("\n");
-
-	listTemp = list;
+	printGeneToFile(fittestPopNode(list)->gene,fp);
 
 	for (i = 0; i < numGenInt - 1; i++)
 	{
-		listTemp = mutateAndCrossOverPopulation(listTemp, &invt);
-		gene_print((fittestPopNode(listTemp))->gene);
-		printf("\n");
-		printPopulationToFile(listTemp, fp);
+		list = mutateAndCrossOverPopulation(list, &invt);
+		calculateFitness(list, &invt);
+		printf("Gen:   %d ", i+1);
+		pop_print_fittest(list);
+		printList(list);
+
+		printGeneToFile(fittestPopNode(list)->gene,fp);
+
 	}
 
 	fclose(fp);

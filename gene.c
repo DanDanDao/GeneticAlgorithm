@@ -1,25 +1,31 @@
 /******************************************************************************
-** Student name: 	...
-** Student number: 	...
+** Student name: 	Quang Dao
+** Student number: 	S3687103
 ** Course: 			Advanced Programming Techniques - S2 2018
 ******************************************************************************/
 
 #include "gene.h"
 
-int * create_pcbmill_chrom(int numAlleles){
-	/* TO DO */
-	int * chrom = malloc(sizeof(*chrom)*numAlleles);
-	int i;
+int *create_pcbmill_chrom(int numAlleles)
+{
+	int index = 0, randomValue = rand() % numAlleles;
+	int *pcbmill_chrom = safeMalloc(sizeof(*pcbmill_chrom) * numAlleles);
 
-	for (i = 0; i < numAlleles; i++) {
-		chrom[i] = rand() % (MINFN_MAX + 1);
+	while (index < numAlleles)
+	{
+		while (contains(pcbmill_chrom, index, randomValue) == TRUE)
+		{
+			randomValue = rand() % numAlleles;
+		}
+		pcbmill_chrom[index] = randomValue;
+		index++;
 	}
-	return chrom;
+	return pcbmill_chrom;
 }
 
 int * create_minfn_chrom(int numAlleles){
 	/* TO DO */
-	int * chrom = malloc(sizeof(*chrom)*numAlleles);
+	int * chrom = safeMalloc(sizeof(*chrom)*numAlleles);
 	int i;
 
 	for (i = 0; i < numAlleles; i++) {
@@ -139,7 +145,26 @@ Gene * crossover_minfn(Gene *g1, Gene *g2){
 
 double eval_pcbmill(InVTable *invt, Gene *gene){
 	/* TO DO */
-	return 0.0;
+	double totalRawScore;
+	int i;
+	totalRawScore = 0;
+
+	for (i = 0; i < invt->tot; i++)
+	{
+		int * vector = invt->table[i];
+		double rawScore;
+		int j;
+
+		rawScore = 0;
+		for (j = 0; j < gene->num_alleles; j++)
+		{
+			rawScore += gene->chromosome[j] * vector[j];
+		}
+		rawScore -= vector[invt->width - 1];
+		totalRawScore += fabs(rawScore);
+	}
+
+	return totalRawScore;
 }
 
 double eval_minfn(InVTable *invt, Gene *gene){
@@ -241,9 +266,8 @@ void * safeMalloc(size_t size)
 void printGeneToFile(Gene * gene, FILE * fp)
 {
 	int i;
-	fp = fopen("out.dat", "w");
 	if (fp == NULL) {
-		printf("I couldn't open results.dat for writing.\n");
+		printf("I couldn't open file for writing.\n");
 		exit(0);
 	}
 
@@ -256,4 +280,19 @@ void printGeneToFile(Gene * gene, FILE * fp)
 	}
 	fprintf(fp, " fit: %.3f", gene->fitness);
 	fprintf(fp, " raw: %.3f \n", gene->raw_score);
+}
+
+Boolean contains(int *array, int arraySize, int value)
+{
+	int i = 0;
+
+	while (i < arraySize)
+	{
+		if (array[i] == value)
+		{
+			return TRUE;
+		}
+		i++;
+	}
+	return FALSE;
 }

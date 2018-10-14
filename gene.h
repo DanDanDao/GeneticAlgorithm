@@ -1,6 +1,6 @@
 /******************************************************************************
-** Student name: 	...
-** Student number: 	...
+** Student name: 	Quang Dao
+** Student number: 	S3687103
 ** Course: 			Advanced Programming Techniques - S2 2018
 ******************************************************************************/
 
@@ -87,5 +87,7 @@ int find_index(int a[], int num_elements, int value);
 void * safeMalloc(size_t size);
 
 void printGeneToFile(Gene * gene, FILE * fp);
+
+Boolean contains(int *array, int arraySize, int value);
 
 #endif

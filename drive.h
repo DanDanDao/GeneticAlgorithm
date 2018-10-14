@@ -1,6 +1,6 @@
 /******************************************************************************
-** Student name: 	...
-** Student number: 	...
+** Student name: 	Quang Dao
+** Student number: 	S3687103
 ** Course: 			Advanced Programming Techniques - S2 2018
 ******************************************************************************/
 
@@ -22,7 +22,7 @@
 /* The number of alleles for use in the two test functions
  * test_pcbmill() and test_minfn() */
  #define TEST_ALLELE_LEN 6
- 
+
 /* Avoid having 'magic numbers' when using argv ... */
 enum argtype {geneType = 1, alleleSize, popSize, numGen, inputFile, outputFile};
 

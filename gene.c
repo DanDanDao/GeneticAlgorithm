@@ -6,6 +6,7 @@
 
 #include "gene.h"
 
+/* Function to create new pcbmill chromosome */
 int *create_pcbmill_chrom(int numAlleles)
 {
 	int index = 0, randomValue = rand() % numAlleles;
@@ -23,8 +24,9 @@ int *create_pcbmill_chrom(int numAlleles)
 	return pcbmill_chrom;
 }
 
-int * create_minfn_chrom(int numAlleles){
-	/* TO DO */
+/* Function to create new minfn chromosome */
+int * create_minfn_chrom(int numAlleles)
+{
 	int * chrom = safeMalloc(sizeof(*chrom)*numAlleles);
 	int i;
 
@@ -34,8 +36,9 @@ int * create_minfn_chrom(int numAlleles){
 	return chrom;
 }
 
-Gene * mutate_pcbmill(Gene *g){
-	/* TO DO */
+/* Function to mutate pcbmill gene */
+Gene * mutate_pcbmill(Gene *g)
+{
 	int num1, num2, temp, i;
 	Gene * gene = malloc(sizeof(Gene));
 	* gene = * g;
@@ -61,8 +64,9 @@ Gene * mutate_pcbmill(Gene *g){
 	return gene;
 }
 
-Gene * mutate_minfn(Gene *g){
-	/* TO DO */
+/* Function to mutate minfn gene */
+Gene * mutate_minfn(Gene *g)
+{
 	int i, num;
 	Gene * gene = malloc(sizeof(Gene));
 	* gene = * g;
@@ -80,8 +84,9 @@ Gene * mutate_minfn(Gene *g){
 	return gene;
 }
 
-Gene * crossover_pcbmill(Gene *g1, Gene *g2){
-	/* TO DO */
+/* Function to crossover pcbmill gene */
+Gene * crossover_pcbmill(Gene *g1, Gene *g2)
+{
 	int  i, j, k;
 	int value, index;
 	Gene * gene = gene_create_rand_gene(g1->num_alleles, create_minfn_chrom);
@@ -128,8 +133,9 @@ Gene * crossover_pcbmill(Gene *g1, Gene *g2){
 	return gene;
 }
 
-Gene * crossover_minfn(Gene *g1, Gene *g2){
-	/* TO DO */
+/* Function to crossover minfn gene */
+Gene * crossover_minfn(Gene *g1, Gene *g2)
+{
 	Gene * gene = gene_create_rand_gene(g1->num_alleles, create_minfn_chrom);
 	int i;
 	for(i = 0; i < gene->num_alleles/2; i++)
@@ -143,8 +149,9 @@ Gene * crossover_minfn(Gene *g1, Gene *g2){
 	return gene;
 }
 
-double eval_pcbmill(InVTable *invt, Gene *gene){
-	/* TO DO */
+/* Function to evaluate pcbmill gene */
+double eval_pcbmill(InVTable *invt, Gene *gene)
+{
 	double totalRawScore;
 	int i;
 	totalRawScore = 0;
@@ -167,8 +174,9 @@ double eval_pcbmill(InVTable *invt, Gene *gene){
 	return totalRawScore;
 }
 
-double eval_minfn(InVTable *invt, Gene *gene){
-	/* TO DO */
+/* Function to evaluate minfn gene */
+double eval_minfn(InVTable *invt, Gene *gene)
+{
 	double totalRawScore;
 	int i;
 	totalRawScore = 0;
@@ -190,8 +198,9 @@ double eval_minfn(InVTable *invt, Gene *gene){
 	return totalRawScore;
 }
 
-Gene * gene_create_rand_gene(int numAlleles, CreateFn create_chrom){
-	/* TO DO */
+/* Function to create a new gene */
+Gene * gene_create_rand_gene(int numAlleles, CreateFn create_chrom)
+{
 	Gene * gene = malloc(sizeof(Gene));
 	gene->num_alleles = numAlleles;
 	gene->chromosome = create_chrom(numAlleles);
@@ -200,31 +209,36 @@ Gene * gene_create_rand_gene(int numAlleles, CreateFn create_chrom){
 	return gene;
 }
 
-void gene_calc_fitness(Gene *gene, EvalFn evaluate_fn, InVTable *invTab){
-	/* TO DO */
+/* Function to calculate gene fitness */
+void gene_calc_fitness(Gene *gene, EvalFn evaluate_fn, InVTable *invTab)
+{
 	gene->raw_score = evaluate_fn(invTab, gene);
 	gene->fitness =  gene_get_fitness(gene);
 }
 
-void gene_normalise_fitness(Gene *gene, double total_fitness){
-	/* TO DO */
+/* Function to normalise gene fitness */
+void gene_normalise_fitness(Gene *gene, double total_fitness)
+{
 	gene->fitness /= total_fitness;
 }
 
-void gene_free(Gene *gene){
-	/* TO DO */
+/* Function to free gene */
+void gene_free(Gene *gene)
+{
 	free(gene->chromosome);
 	free(gene);
 }
 
-
-double gene_get_fitness(Gene *gene){
+/* Function to get gene fitness */
+double gene_get_fitness(Gene *gene)
+{
 	/* TO DO */
 	return 1/(gene->raw_score+1);
 }
 
-void gene_print(Gene *gene) {
-	/* TO DO */
+/* Function to print out gene */
+void gene_print(Gene *gene)
+{
 	int i;
 	printf("chrom: ");
 	for(i = 0; i < gene->num_alleles; i++)
@@ -237,6 +251,7 @@ void gene_print(Gene *gene) {
 	printf(" raw: %.3f \n", gene->raw_score);
 }
 
+/* Function to find chromosome */
 int find_index(int a[], int num_elements, int value)
 {
 	int i;
@@ -250,6 +265,7 @@ int find_index(int a[], int num_elements, int value)
 	return(-1);  /* if it was not found */
 }
 
+/* Safe Malloc */
 void * safeMalloc(size_t size)
 {
 	void * p = malloc(size);
@@ -263,6 +279,7 @@ void * safeMalloc(size_t size)
 	return p;
 }
 
+/* Function to print out gene to output file */
 void printGeneToFile(Gene * gene, FILE * fp)
 {
 	int i;

@@ -6,8 +6,9 @@
 
 #include "pop.h"
 
-Boolean pop_init(Pop_list **pop){
-	/* TO DO */
+/* Function to init a population */
+Boolean pop_init(Pop_list **pop)
+{
 	Pop_list * p = safeMalloc(sizeof(*p));
 	p->head = NULL;
 	p->count = 0;
@@ -16,24 +17,25 @@ Boolean pop_init(Pop_list **pop){
 	p->crossover_genes = NULL;
 	p->evaluate_fn = NULL;
 	*pop = p;
-
-
 	return TRUE;
 }
 
-void pop_set_fns(Pop_list *p,CreateFn cf,MutateFn mf,CrossOverFn cof,EvalFn ef){
-	/* TO DO */
+/* Function to set appropriate functions that are used in a population */
+void pop_set_fns(Pop_list *p,CreateFn cf,MutateFn mf,CrossOverFn cof,EvalFn ef)
+{
 	p->create_rand_chrom = cf;
 	p->mutate_gene = mf;
 	p->crossover_genes = cof;
 	p->evaluate_fn = ef;
 }
 
-void pop_print_fittest(Pop_list *p){
-	/* TO DO */
+/* Function to print out the fittest node in a population */
+void pop_print_fittest(Pop_list *p)
+{
 	int i;
 	Pop_node * node;
 	node = fittestPopNode(p);
+
 	printf("chrom: ");
 	for(i = 0; i < node->gene->num_alleles; i++)
 	{
@@ -43,10 +45,9 @@ void pop_print_fittest(Pop_list *p){
 	}
 	printf(" fit: %.3f", node->gene->fitness);
 	printf(" raw: %.3f \n", node->gene->raw_score);
-	/*printPopulationToFile(p, stdout);*/
 }
 
-/* TO DO - other functions as appropriate */
+/* Function to print out the population into output file */
 void printPopulationToFile(Pop_list * p, FILE * fp)
 {
 	Pop_node * node;
@@ -65,6 +66,7 @@ void printPopulationToFile(Pop_list * p, FILE * fp)
 	printGeneToFile(fittestGene, fp);
 }
 
+/* Function to create a new population */
 void createInitialPopulation(Pop_list * p, int popSize, int alleleSize)
 {
 	int i;
@@ -76,6 +78,7 @@ void createInitialPopulation(Pop_list * p, int popSize, int alleleSize)
 	}
 }
 
+/* Function to create a new node */
 Pop_node * createPopNode(int alleleSize, CreateFn cf)
 {
 	Pop_node * node = safeMalloc(sizeof(*node));
@@ -85,6 +88,7 @@ Pop_node * createPopNode(int alleleSize, CreateFn cf)
 	return node;
 }
 
+/* Function to insert node into a population */
 void insertNode(Pop_list * p, Pop_node * node)
 {
 	node->next = p->head;
@@ -92,6 +96,7 @@ void insertNode(Pop_list * p, Pop_node * node)
 	p->count++;
 }
 
+/* Function to calculate fitness of a population */
 void calculateFitness(Pop_list * list, InVTable * invt)
 {
 	Pop_node * node;
@@ -112,6 +117,7 @@ void calculateFitness(Pop_list * list, InVTable * invt)
 	}
 }
 
+/* Function to print out a population */
 void printList(Pop_list * list)
 {
 	double totalFitness = 0;
@@ -126,6 +132,7 @@ void printList(Pop_list * list)
 	printf("Total Fitness: %f \n\n", totalFitness);
 }
 
+/* Function to mutate and crossover a population */
 Pop_list * mutateAndCrossOverPopulation(Pop_list * p, InVTable * invt)
 {
 	Pop_list * newPopulation;
@@ -154,9 +161,10 @@ Pop_list * mutateAndCrossOverPopulation(Pop_list * p, InVTable * invt)
 		}
 		insertNode(newPopulation, newNode);
 	}
-	 return newPopulation;
+	return newPopulation;
 }
 
+/* Function to sort population */
 void sortPopulation(Pop_list * p)
 {
 	Boolean swap = TRUE;
@@ -183,6 +191,7 @@ void sortPopulation(Pop_list * p)
 	}
 }
 
+/* Function to swap nodes */
 void swapPopNode(Pop_node * previous, Pop_node * current)
 {
 	Gene * gene = previous->gene;
@@ -190,6 +199,7 @@ void swapPopNode(Pop_node * previous, Pop_node * current)
 	current->gene = gene;
 }
 
+/* Function to find fittest node in a population */
 Pop_node * fittestPopNode(Pop_list * p)
 {
 	Pop_node * node, * fittestNode;
@@ -207,6 +217,7 @@ Pop_node * fittestPopNode(Pop_list * p)
 	return fittestNode;
 }
 
+/* Function to clone a node in */
 Pop_node * clonePopNode(Pop_node * node)
 {
 	Pop_node * clone = safeMalloc(sizeof(*clone));
@@ -241,6 +252,7 @@ Pop_node * randomPopNode(Pop_list * p)
 	return randomNode;
 }
 
+/* Function to free a population */
 void freePop(Pop_list * p)
 {
 	Pop_node * node = p->head;
@@ -253,6 +265,7 @@ void freePop(Pop_list * p)
 	free(p);
 }
 
+/* Function to free node */
 void freePopNode(Pop_node * node)
 {
 	if(node->gene != NULL)
@@ -262,8 +275,9 @@ void freePopNode(Pop_node * node)
 	free(node);
 }
 
+/* Function to get random value in a range */
 double fRand(double fMin, double fMax)
 {
-    double f = (double)rand() / RAND_MAX;
-    return fMin + f * (fMax - fMin);
+	double f = (double)rand() / RAND_MAX;
+	return fMin + f * (fMax - fMin);
 }

@@ -6,12 +6,15 @@
 
 #include "invector.h"
 
-void invector_init(InVTable *invt) {
-  /* TO DO */
+/* Create a new InVector Table */
+void invector_init(InVTable *invt)
+{
   invt -> tot = invt -> width = 0;
 }
 
-Boolean insertIntoInvector(InVTable * invt, InVector vector) {
+/* Insert vector to table */
+Boolean insertIntoInvector(InVTable * invt, InVector vector)
+{
   int i;
 
   if(invt->tot == INVT_MAX)
@@ -28,10 +31,13 @@ Boolean insertIntoInvector(InVTable * invt, InVector vector) {
   return TRUE;
 }
 
-Boolean readInvector(InVTable * invt, FILE * fp) {
+/* Read output file into table */
+Boolean readInvector(InVTable * invt, FILE * fp)
+{
   char line[256];
 
-  while(fgets(line, sizeof(line), fp) != NULL) {
+  while(fgets(line, sizeof(line), fp) != NULL)
+  {
     InVector vector;
 
     int i;
@@ -42,15 +48,18 @@ Boolean readInvector(InVTable * invt, FILE * fp) {
 
       strtok(line, INV_DELIM2);
       i = 0;
-      while(TRUE) {
+      while(TRUE)
+      {
         char * token = strtok(NULL, INV_DELIM3);
-        if (token == NULL){
+        if (token == NULL)
+        {
           break;
         }
         vector[i++] = strtol(token, NULL, 10);
       }
       invt->width = i;
-      if(!insertIntoInvector(invt, vector)){
+      if(!insertIntoInvector(invt, vector))
+      {
         return FALSE;
       }
     }
@@ -58,11 +67,15 @@ Boolean readInvector(InVTable * invt, FILE * fp) {
   return TRUE;
 }
 
-void printInvector(InVTable * invt) {
+/* Function to print out table */
+void printInvector(InVTable * invt)
+{
   int i;
-  for (i = 0; i < invt->tot; i++) {
+  for (i = 0; i < invt->tot; i++)
+  {
     int j;
-    for (j=0; j < invt->width; j++) {
+    for (j=0; j < invt->width; j++)
+    {
       printf("%d ", invt->table[i][j]);
     }
     printf("\n");

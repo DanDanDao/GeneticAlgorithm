@@ -19,15 +19,22 @@ int main(int argc, char *argv[])
 	int popSizeInt = 0;
 	int numGenInt = 0;
 
+	#ifdef DEBUG
+	test_minfn();
+	test_pcbmill();
+	#endif
+
 	/* The only point at which srand should be called */
 	srand(SRAND_SEED);
 
+	/* Check if the arguments are correct */
 	if(argc != CMD_ARG_MAX)
 	{
 		printf("Incorrect number of arguments. \n\n");
 		return EXIT_FAILURE;
 	}
 
+	/* Check and open input file to read */
 	fp = fopen(argv[inputFile], "r");
 	if(fp == NULL)
 	{
@@ -35,21 +42,15 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
+	/* Create InVector Table from input file */
 	invector_init(&invt);
 	readInvector(&invt, fp);
-
-	printInvector(&invt);
-	printf("\n");
-
 	fclose(fp);
 
-	#ifdef DEBUG
-	test_minfn();
-	test_pcbmill();
-	#endif
-
+	/* Init population */
 	pop_init(&list);
 
+	/* Check gennType argument and set appropriate functions  */
 	if(strcmp(argv[geneType], "minfn") == 0)
 	{
 		pop_set_fns(list, create_minfn_chrom, mutate_minfn, crossover_minfn, eval_minfn);
@@ -66,6 +67,7 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
+	/* Check and open output file to write */
 	fp = fopen(argv[outputFile], "w");
 	if(fp == NULL)
 	{
@@ -73,37 +75,44 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
+	/* Read population size and number of generation from command line arguments */
 	popSizeInt = strtol(argv[popSize], NULL, 10);
 	numGenInt = strtol(argv[numGen], NULL, 10);
 
+	/* Create appropriate population and calculate fitness of nodes */
 	createInitialPopulation(list, popSizeInt, numAllelesInt);
 	calculateFitness(list, &invt);
 
+	/* Print out the fittest node to output file */
 	printf("Gen:   0 ");
 	pop_print_fittest(list);
-	printList(list);
 	printGeneToFile(fittestPopNode(list)->gene,fp);
 
+	/* Print out the population and */
+	printList(list);
+
+	/* Create generations of population, mutate and crossover and then print out
+	** the fittest node to console and to output file */
 	for (i = 0; i < numGenInt - 1; i++)
 	{
 		list = mutateAndCrossOverPopulation(list, &invt);
 		calculateFitness(list, &invt);
 		printf("Gen:   %d ", i+1);
 		pop_print_fittest(list);
-		printList(list);
-
 		printGeneToFile(fittestPopNode(list)->gene,fp);
+		printList(list);
 
 	}
 
+	/* Close output file */
 	fclose(fp);
 
 	return EXIT_SUCCESS;
-
 }
 
-void test_minfn(void){
-	/* TO DO */
+/* Test for minfn */
+void test_minfn(void)
+{
 	Gene * gene = gene_create_rand_gene(TEST_ALLELE_LEN, create_minfn_chrom);
 	Gene * geneM = mutate_minfn(gene);
 	Gene * gene1 = gene_create_rand_gene(TEST_ALLELE_LEN, create_minfn_chrom);
@@ -111,45 +120,31 @@ void test_minfn(void){
 	Gene * gene3 = crossover_minfn(gene1, gene2);
 
 	printf("MINFN gene:\n");
-	/* TO DO - create a random minfn gene by calling create_rand_gene
-	The length of the gene's chromosome should be TEST_ALLELE_LEN */
-	/* TO DO - print the gene */
 	gene_print(gene);
 
 	printf("Mutate: ");
-	/* TO DO - create a mutant copy of the gene using mutate_minfn */
-	/* TO DO - print the mutant gene */
 	printf("\n");
 	gene_print(geneM);
 
-	/* TO DO - free the original gene and the mutant */
 	gene_free(gene);
 	gene_free(geneM);
 
 	printf("MINFN genes:\n");
-	/* TO DO - create 2 random minfn 'parent' genes using calls
-	to create_rand_gene
-	The length of the gene's chromosome should be TEST_ALLELE_LEN */
-
-	/* TO DO - print each gene */
 	gene_print(gene1);
 	gene_print(gene2);
 
 	printf("Crossover:\n");
-	/* TO DO produce a new gene by calling crossover_minfn
-	with the parent genes */
-	/* TO DO - print the new gene */
 	gene_print(gene3);
 
 	printf("\n");
-	/* TO DO - free both parents and the child gene */
 	gene_free(gene1);
 	gene_free(gene2);
 	gene_free(gene3);
 }
 
-void test_pcbmill(void){
-	/* TO DO */
+/* Test for pcbmill */
+void test_pcbmill(void)
+{
 	Gene * gene = gene_create_rand_gene(TEST_ALLELE_LEN, create_pcbmill_chrom);
 	Gene * geneM = mutate_pcbmill(gene);
 	Gene * gene1 = gene_create_rand_gene(TEST_ALLELE_LEN, create_pcbmill_chrom);
@@ -158,37 +153,22 @@ void test_pcbmill(void){
 
 
 	printf("PCBMILL gene:\n");
-	/* TO DO - create a random pcbmill gene by calling create_rand_gene
-	The length of the gene's chromosome should be TEST_ALLELE_LEN */
-	/* TO DO - print the gene using gene_print */
 	gene_print(gene);
 
 	printf("Mutate: ");
-	/* TO DO - create a mutant copy of the gene using mutate_pcbmill */
-	/* TO DO - print the mutant gene using gene_print */
 	printf("\n");
 	gene_print(geneM);
-	/* TO DO - free the original gene and the mutant */
 	gene_free(gene);
 	gene_free(geneM);
 
 	printf("PCBMILL genes:\n");
-	/* TO DO - create 2 random pcbmill 'parent' genes using calls
-	to create_rand_gene
-	The length of the gene's chromosome should be TEST_ALLELE_LEN */
-
-	/* TO DO - print each gene */
 	gene_print(gene1);
 	gene_print(gene2);
 
 	printf("Crossover:\n");
-	/* TO DO produce a new gene by calling crossover_pcbmill
-	with the parent genes */
-	/* TO DO - print the new gene */
 	gene_print(gene3);
 
 	printf("\n");
-	/* TO DO - free both parents and the child gene */
 	gene_free(gene1);
 	gene_free(gene2);
 	gene_free(gene3);

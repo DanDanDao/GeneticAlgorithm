@@ -113,6 +113,8 @@ int main(int argc, char *argv[])
 		*/
 	}
 
+	freePop(list);
+
 	/* Close output file */
 	fclose(fp);
 

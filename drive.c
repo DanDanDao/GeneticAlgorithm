@@ -59,7 +59,13 @@ int main(int argc, char *argv[])
 	else if(strcmp(argv[geneType], "pcbmill") == 0)
 	{
 		pop_set_fns(list, create_pcbmill_chrom, mutate_pcbmill, crossover_pcbmill, eval_pcbmill);
-		numAllelesInt = strtol(argv[alleleSize], NULL, 10);
+		if (strtol(argv[alleleSize], NULL, 10) <= invt.tot) {
+			numAllelesInt = strtol(argv[alleleSize], NULL, 10);
+		} else {
+			printf("Allele size can not larger then number of vector in the input file\n");
+			printf("Allele size is assigned to: %d\n", invt.tot);
+			numAllelesInt = invt.tot;
+		}
 	}
 	else
 	{
@@ -87,9 +93,10 @@ int main(int argc, char *argv[])
 	printf("Gen:   0 ");
 	pop_print_fittest(list);
 	printGeneToFile(fittestPopNode(list)->gene,fp);
+	printf("\n");
 
-	/* Print out the population and */
-	printList(list);
+	/* Print out the population
+	printList(list);*/
 
 	/* Create generations of population, mutate and crossover and then print out
 	** the fittest node to console and to output file */
@@ -100,8 +107,10 @@ int main(int argc, char *argv[])
 		printf("Gen:   %d ", i+1);
 		pop_print_fittest(list);
 		printGeneToFile(fittestPopNode(list)->gene,fp);
+		printf("\n");
+		/*
 		printList(list);
-
+		*/
 	}
 
 	/* Close output file */

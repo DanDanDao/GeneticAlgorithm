@@ -158,19 +158,21 @@ double eval_pcbmill(InVTable *invt, Gene *gene)
 
 	for (i = 0; i < invt->tot; i++)
 	{
-		int * vector = invt->table[i];
 		double rawScore;
-		int j;
+		int * vector = invt->table[i];
+		int * vectorNext;
 
-		rawScore = 0;
-		for (j = 0; j < gene->num_alleles; j++)
+		if (i < invt->tot - 1)
 		{
-			rawScore += gene->chromosome[j] * vector[j];
+			vectorNext = invt->table[i+1];
+		} else {
+			vectorNext = invt->table[0];
 		}
-		rawScore -= vector[invt->width - 1];
-		totalRawScore += fabs(rawScore);
-	}
 
+		rawScore = sqrt(pow((vectorNext[1] - vector[1]), 2) + pow((vectorNext[2] - vector[2]), 2));
+
+		totalRawScore += rawScore;
+	}
 	return totalRawScore;
 }
 
